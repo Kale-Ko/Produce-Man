@@ -5,10 +5,11 @@ import com.kale_ko.api.java.Console;
 import java.io.IOException;
 
 public class Main {
+    public static Boolean terminal = false;
     public static Boolean autostart = false;
     public static String debug = "none";
 
-    public static void main(String[] args) throws IOException,InterruptedException{
+    public static void main(String[] args) throws IOException, InterruptedException {
         int index = 0;
         for (String string : args) {
             if (string.equalsIgnoreCase("-debug")) {
@@ -22,6 +23,8 @@ public class Main {
                 }
             } else if (string.equalsIgnoreCase("-autostart")) {
                 autostart = true;
+            } else if (string.equalsIgnoreCase("-terminal")) {
+                terminal = true;
             }
 
             index++;
@@ -34,7 +37,13 @@ public class Main {
         if (autostart || input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("yeah") || input.equalsIgnoreCase("ok")) {
             Console.log("Here we go!");
 
-            Game.start(6, 6, 11, 300);
+            if (terminal) {
+                TerminalGame.start(6, 6, 11, 300);
+            } else {
+                Console.error("Discord is not set up idiot");
+
+                //DiscordGame.start(6, 6);
+            }
         } else {
             Console.log("Ok, bye bye");
         }
