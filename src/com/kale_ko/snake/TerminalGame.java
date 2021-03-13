@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-@SuppressWarnings({"IntegerDivisionInFloatingPointContext"})
-public class Game {
+@SuppressWarnings({"IntegerDivisionInFloatingPointContext", "BusyWait"})
+public class TerminalGame {
     public static Map<String, String> grid = new HashMap<>();
 
     public static Boolean gameOver = false;
@@ -24,18 +24,17 @@ public class Game {
     public static Integer appleSpotY;
     public static String direction = "RIGHT";
 
-    @SuppressWarnings("BusyWait")
-    public static void start(Integer width, Integer height, Integer consoleSize, Integer delay) throws IOException,InterruptedException {
-        Game.score = 0;
-        Game.width = width;
-        Game.height = height;
-        Game.consoleSize = consoleSize;
-        Game.delay = delay;
+    public static void start(Integer width, Integer height, Integer consoleSize, Integer delay) throws InterruptedException, IOException {
+        TerminalGame.score = 0;
+        TerminalGame.width = width;
+        TerminalGame.height = height;
+        TerminalGame.consoleSize = consoleSize;
+        TerminalGame.delay = delay;
 
         int[] random = randomCords();
         appleSpotX = random[0];
         appleSpotY = random[1];
-        Console.debug("The apple will be at X:" + appleSpotX + ", Y:" + appleSpotY, 1);
+        sendMessage("debug1", "The apple will be at X:" + appleSpotX + ", Y:" + appleSpotY);
 
         for (int index = 0; index < width - 1; index++) {
             for (int index2 = 0; index2 < height - 1; index2++) {
@@ -50,7 +49,7 @@ public class Game {
 
                 set(index, index2, type);
 
-                Console.debug("Set X:" + index + " Y:"+ index2 + " to " + type.toLowerCase(), 2);
+                sendMessage("debug2", "Set X:" + index + " Y:"+ index2 + " to " + type.toLowerCase());
             }
         }
 
@@ -65,14 +64,6 @@ public class Game {
     }
 
     public static void update() throws IOException {
-        if (snakeSpotX >= width || snakeSpotX < 0 || snakeSpotY >= height || snakeSpotY < 0) {
-            gameOver = true;
-
-            Console.log("Game over!");
-
-            return;
-        }
-
         //noinspection SuspiciousNameCombination
         if (get(appleSpotY, appleSpotX).equalsIgnoreCase("HEAD")) {
             score++;
@@ -81,7 +72,7 @@ public class Game {
             appleSpotX = random[0];
             appleSpotY = random[1];
 
-            Console.debug("The new apple will be at X:" + appleSpotX + ", Y:" + appleSpotY, 1);
+            sendMessage("debug1", "The new apple will be at X:" + appleSpotX + ", Y:" + appleSpotY);
 
             set(appleSpotX, appleSpotY, "APPLE");
         }
@@ -100,11 +91,11 @@ public class Game {
 
         set(snakeSpotX, snakeSpotY, "HEAD");
 
-        Console.debug("Moved the snake to X:" + snakeSpotX + " Y:" + snakeSpotY, 1);
+        sendMessage("debug1", "Moved the snake to X:" + snakeSpotX + " Y:" + snakeSpotY);
 
         render();
 
-        String newdirrection = Console.getInput();
+        String newdirrection = getInput();
         if (newdirrection.equalsIgnoreCase("up") || newdirrection.equalsIgnoreCase("w")) {
             direction = "UP";
         } else if (newdirrection.equalsIgnoreCase("down") || newdirrection.equalsIgnoreCase("s")) {
@@ -113,6 +104,12 @@ public class Game {
             direction = "LEFT";
         } else if (newdirrection.equalsIgnoreCase("right") || newdirrection.equalsIgnoreCase("d")) {
             direction = "RIGHT";
+        }
+
+        if (snakeSpotX > width - 2 || snakeSpotX < 0 || snakeSpotY > height - 2 || snakeSpotY < 0) {
+            gameOver = true;
+
+            sendMessage("message", "Game over!");
         }
     }
 
@@ -129,13 +126,18 @@ public class Game {
                 if (type.equalsIgnoreCase("HEAD")) output.append(ConsoleColors.GREEN_BOLD + "\u25A0  ");
                 if (type.equalsIgnoreCase("SNAKE")) output.append(ConsoleColors.GREEN_BOLD + "\u25A0  ");
 
-                Console.debug("Rendered X:" + index + " Y:"+ index2 + " as " + type.toLowerCase(), 2);
+                sendMessage("debug2", "Rendered X:" + index + " Y:"+ index2 + " as " + type.toLowerCase());
             }
         }
 
-        Console.log("\n".repeat(Math.max(0, consoleSize - height)) + output.toString());
+        StringBuilder lines = new StringBuilder();
+        for (int index = 0; index < consoleSize - height; index++) {
+            lines.append("\n");
+        }
 
-        Console.debug("Rendered Snake", 1);
+        sendMessage("message", lines + output.toString());
+
+        sendMessage("debug1", "Rendered Snake");
     }
 
     public static void set(Integer x, Integer y, String type) {
@@ -158,5 +160,25 @@ public class Game {
         cords[0] = x;
         cords[1] = y;
         return cords;
+    }
+
+    public static String getInput() throws IOException {
+        return Console.getInput();
+    }
+
+    public static void sendMessage(String level, String message) {
+        if (level.equalsIgnoreCase("message")) {
+            Console.log(message);
+        } else if (level.equalsIgnoreCase("warn")) {
+            Console.warn(message);
+        } else if (level.equalsIgnoreCase("error")) {
+            Console.error(message);
+        } else if (level.equalsIgnoreCase("debug1")) {
+            Console.debug(message, 1);
+        } else if (level.equalsIgnoreCase("debug2")) {
+            Console.debug(message, 2);
+        } else {
+            Console.error(level + " is not a message level");
+        }
     }
 }
