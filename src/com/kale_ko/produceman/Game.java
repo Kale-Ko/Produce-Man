@@ -14,8 +14,7 @@ public class Game {
 
     public static Integer score;
     public static Integer size;
-    public static Boolean areBoxes = true;
-    public static Integer boxes = 5;
+    public static Integer boxes = 10;
     public static Boolean gameOver = false;
     public static String direction = "RIGHT";
     public static Integer playerSpotX;
@@ -27,7 +26,7 @@ public class Game {
         Game.score = 0;
         Game.size = size;
 
-        int[] random = randomCords();
+        int[] random = randomCords(true);
         pointSpotX = random[0];
         pointSpotY = random[1];
         sendMessage("debug1", "The point will be at X:" + pointSpotX + ", Y:" + pointSpotY);
@@ -49,19 +48,16 @@ public class Game {
             }
         }
 
-         if (areBoxes) {
-             for (int index = 0; index < boxes; index++) {
-                 int rndX = new Random().nextInt(size - 1);
-                 int rndY = new Random().nextInt(size - 1);
+        for (int index = 0; index < boxes; index++) {
+            int rndX = new Random().nextInt(size - 1);
+            int rndY = new Random().nextInt(size - 1);
 
-                 Console.log(rndX + "  " + rndY);
-                 if (get(rndX, rndY).equalsIgnoreCase("AIR")) {
-                     set(rndX, rndY, "BOX");
-                 } else {
-                     index--;
-                 }
-             }
-         }
+            if (get(rndX, rndY).equalsIgnoreCase("AIR")) {
+                set(rndX, rndY, "BOX");
+            } else {
+                index--;
+            }
+        }
 
         render();
 
@@ -72,7 +68,7 @@ public class Game {
         if (get(pointSpotY, pointSpotX).equalsIgnoreCase("PLAYER")) {
             score++;
 
-            int[] random = randomCords();
+            int[] random = randomCords(false);
             pointSpotX = random[0];
             pointSpotY = random[1];
 
@@ -106,7 +102,8 @@ public class Game {
             playerSpotX++;
         }
 
-        if (get(playerSpotY, playerSpotX).equalsIgnoreCase("BOX") || playerSpotX > size - 2 || playerSpotX < 0 || playerSpotY > size - 2 || playerSpotY < 0) {
+        Console.log(playerSpotX + "  " + playerSpotY + "  " + size + "  " + score);
+        if (get(playerSpotY, playerSpotX).equalsIgnoreCase("BOX") || playerSpotX == size - 1 || playerSpotX == -1 || playerSpotY == size - 1 || playerSpotY == -1) {
             gameOver = true;
 
             sendMessage("message", "Game over!");
@@ -135,7 +132,7 @@ public class Game {
 
                 if (type.equalsIgnoreCase("AIR")) output.append(ConsoleColors.BLUE_BOLD + ConsoleColors.BLUE_BACKGROUND + "   ");
                 if (type.equalsIgnoreCase("BOX")) output.append(ConsoleColors.BLACK_BOLD + ConsoleColors.BLACK_BACKGROUND + "   ");
-                if (type.equalsIgnoreCase("POINT")) output.append(ConsoleColors.YELLOW_BOLD + ConsoleColors.YELLOW_BACKGROUND + "   ");
+                if (type.equalsIgnoreCase("POINT")) output.append(ConsoleColors.RED_BOLD + ConsoleColors.RED_BACKGROUND + "   ");
                 if (type.equalsIgnoreCase("PLAYER")) output.append(ConsoleColors.GREEN_BOLD + ConsoleColors.GREEN_BACKGROUND + "   ");
 
                 sendMessage("debug2", "Rendered X:" + index + " Y:"+ index2 + " as " + type.toLowerCase());
@@ -153,16 +150,21 @@ public class Game {
     }
 
     public static String get(Integer x, Integer y) {
+        if (x > size - 2) x = size - 2;
+        if (y > size - 2) y = size - 2;
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+
         return grid.get(y + "," + x);
     }
 
-    public static int[] randomCords() {
+    public static int[] randomCords(Boolean first) {
         int x = new Random().nextInt(size - 1);
         int y = new Random().nextInt(size - 1);
-        if (x == Math.round(size / 2) - 1 && y == Math.round(size / 2) - 1) return randomCords();
+        if (x == Math.round(size / 2) - 1 && y == Math.round(size / 2) - 1) return randomCords(first);
 
-        if (playerSpotX != null && playerSpotY != null) {
-            if (x == playerSpotX && y == playerSpotY) return randomCords();
+        if (!first) {
+            if (x == playerSpotX && y == playerSpotY || get(y, x).equalsIgnoreCase("BOX")) return randomCords(false);
         }
 
         int[] cords = new int[2];
