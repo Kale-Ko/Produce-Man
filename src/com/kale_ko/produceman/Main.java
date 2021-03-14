@@ -17,7 +17,7 @@ public class Main {
 
                 Console.log("Set grid size to " + args[index + 1]);
             } else if (string.equalsIgnoreCase("-noboxes")) {
-                Game.areBoxes = false;
+                Game.boxes = 0;
 
                 Console.log("Disabled boxes");
             } else if (string.equalsIgnoreCase("-boxes")) {
@@ -46,7 +46,7 @@ public class Main {
         }
 
         if (!autostart) {
-            Console.log("Welcome to Produce man, a game where you need to collect the fruit, would you like to learn how to play?");
+            Console.log("Welcome to Produce man, a game where you need to collect the fruit and avoid boxes, would you like to learn how to play?");
 
             if (Console.getInput().equalsIgnoreCase("yes")) {
                 Console.log("To play you use either wasd or directionals(left, right, up, down) to move. You can click enter to continue in the same direction");
