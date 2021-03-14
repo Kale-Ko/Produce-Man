@@ -1,6 +1,6 @@
 package com.kale_ko.api.java;
 
-import com.kale_ko.snake.Main;
+import com.kale_ko.produceman.Main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
