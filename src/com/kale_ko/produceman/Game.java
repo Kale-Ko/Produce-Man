@@ -14,7 +14,7 @@ public class Game {
 
     public static Integer score;
     public static Integer size;
-    public static Integer boxes = 10;
+    public static Integer boxes = 6;
     public static Boolean gameOver = false;
     public static String direction = "RIGHT";
     public static Integer playerSpotX;
@@ -82,11 +82,11 @@ public class Game {
         String newdirrection = getInput();
         if (newdirrection.equalsIgnoreCase("up") || newdirrection.equalsIgnoreCase("w") && !direction.equalsIgnoreCase("DOWN")) {
             direction = "UP";
-        } else if (newdirrection.equalsIgnoreCase("down") || newdirrection.equalsIgnoreCase("s")&& !direction.equalsIgnoreCase("UP")) {
+        } else if (newdirrection.equalsIgnoreCase("down") || newdirrection.equalsIgnoreCase("s") && !direction.equalsIgnoreCase("UP")) {
             direction = "DOWN";
-        } else if (newdirrection.equalsIgnoreCase("left") || newdirrection.equalsIgnoreCase("a")&& !direction.equalsIgnoreCase("RIGHT")) {
+        } else if (newdirrection.equalsIgnoreCase("left") || newdirrection.equalsIgnoreCase("a") && !direction.equalsIgnoreCase("RIGHT")) {
             direction = "LEFT";
-        } else if (newdirrection.equalsIgnoreCase("right") || newdirrection.equalsIgnoreCase("d")&& !direction.equalsIgnoreCase("LEFT")) {
+        } else if (newdirrection.equalsIgnoreCase("right") || newdirrection.equalsIgnoreCase("d") && !direction.equalsIgnoreCase("LEFT")) {
             direction = "RIGHT";
         }
 
