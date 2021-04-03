@@ -12,15 +12,10 @@ import java.util.Random;
 public class Game {
     public static Map<String, String> grid = new HashMap<>();
 
-    public static Integer score;
-    public static Integer size;
+    public static Integer score, size, playerSpotX, playerSpotY, pointSpotX, pointSpotY;
     public static Integer boxes = 6;
     public static Boolean gameOver = false;
     public static String direction = "RIGHT";
-    public static Integer playerSpotX;
-    public static Integer playerSpotY;
-    public static Integer pointSpotX;
-    public static Integer pointSpotY;
 
     public static void start(Integer size) throws IOException {
         Game.score = 0;
@@ -103,6 +98,7 @@ public class Game {
         }
 
         Console.log(playerSpotX + "  " + playerSpotY + "  " + size + "  " + score);
+
         if (get(playerSpotY, playerSpotX).equalsIgnoreCase("BOX") || playerSpotX == size - 1 || playerSpotX == -1 || playerSpotY == size - 1 || playerSpotY == -1) {
             gameOver = true;
 
