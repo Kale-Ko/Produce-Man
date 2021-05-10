@@ -1,5 +1,6 @@
 package com.kale_ko.api.java;
 
+import com.kale_ko.produceman.DebugModes;
 import com.kale_ko.produceman.Main;
 
 import java.io.BufferedReader;
@@ -20,9 +21,9 @@ public class Console {
     }
 
     public static void debug(String message, int level) {
-        if (level == 2 && Main.debug.equalsIgnoreCase("full")) {
+        if (level == 2 && Main.debug == DebugModes.ALL) {
             System.out.println(ConsoleColors.RESET + ConsoleColors.PURPLE_BOLD + "[Debug] " + ConsoleColors.RESET + ConsoleColors.PURPLE + message);
-        } else if (level == 1 && Main.debug.equalsIgnoreCase("low") || Main.debug.equalsIgnoreCase("full"))  {
+        } else if (level == 1 && Main.debug == DebugModes.SOME || Main.debug == DebugModes.ALL)  {
             System.out.println(ConsoleColors.RESET + ConsoleColors.PURPLE_BOLD + "[Debug] " + ConsoleColors.RESET + ConsoleColors.PURPLE + message);
         }
     }

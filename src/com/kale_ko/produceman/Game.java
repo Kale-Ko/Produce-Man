@@ -2,6 +2,7 @@ package com.kale_ko.produceman;
 
 import com.kale_ko.api.java.Console;
 import com.kale_ko.api.java.ConsoleColors;
+import com.kale_ko.api.java.LoggingLevels;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ public class Game {
         int[] random = randomCords(true);
         pointSpotX = random[0];
         pointSpotY = random[1];
-        sendMessage("debug1", "The point will be at X:" + pointSpotX + ", Y:" + pointSpotY);
+        sendMessage(LoggingLevels.DEBUGLOW, "The point will be at X:" + pointSpotX + ", Y:" + pointSpotY);
 
         for (int index = 0; index < size - 1; index++) {
             for (int index2 = 0; index2 < size - 1; index2++) {
@@ -39,7 +40,7 @@ public class Game {
 
                 set(index, index2, type);
 
-                sendMessage("debug2", "Set X:" + index + " Y:"+ index2 + " to " + type.toLowerCase());
+                sendMessage(LoggingLevels.DEBUGHIGH, "Set X:" + index + " Y:"+ index2 + " to " + type.toLowerCase());
             }
         }
 
@@ -67,7 +68,7 @@ public class Game {
             pointSpotX = random[0];
             pointSpotY = random[1];
 
-            sendMessage("debug1", "The new point will be at X:" + pointSpotX + ", Y:" + pointSpotY);
+            sendMessage(LoggingLevels.DEBUGLOW, "The new point will be at X:" + pointSpotX + ", Y:" + pointSpotY);
 
             set(pointSpotX, pointSpotY, "POINT");
 
@@ -97,20 +98,18 @@ public class Game {
             playerSpotX++;
         }
 
-        Console.log(playerSpotX + "  " + playerSpotY + "  " + size + "  " + score);
-
         if (get(playerSpotY, playerSpotX).equalsIgnoreCase("BOX") || playerSpotX == size - 1 || playerSpotX == -1 || playerSpotY == size - 1 || playerSpotY == -1) {
             gameOver = true;
 
-            sendMessage("message", "Game over!");
-            sendMessage("message", "Your score was " + score);
+            sendMessage(LoggingLevels.MESSAGE, "Game over!");
+            sendMessage(LoggingLevels.MESSAGE, "Your score was " + score);
 
             return;
         }
 
         set(playerSpotX, playerSpotY, "PLAYER");
 
-        sendMessage("debug1", "Moved the snake to X:" + playerSpotX + " Y:" + playerSpotY);
+        sendMessage(LoggingLevels.DEBUGLOW, "Moved the snake to X:" + playerSpotX + " Y:" + playerSpotY);
 
         render();
 
@@ -131,14 +130,14 @@ public class Game {
                 if (type.equalsIgnoreCase("POINT")) output.append(ConsoleColors.RED_BOLD + ConsoleColors.RED_BACKGROUND + "   ");
                 if (type.equalsIgnoreCase("PLAYER")) output.append(ConsoleColors.GREEN_BOLD + ConsoleColors.GREEN_BACKGROUND + "   ");
 
-                sendMessage("debug2", "Rendered X:" + index + " Y:"+ index2 + " as " + type.toLowerCase());
+                sendMessage(LoggingLevels.DEBUGHIGH, "Rendered X:" + index + " Y:"+ index2 + " as " + type.toLowerCase());
             }
         }
 
-        sendMessage("message", "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + output.toString() + ConsoleColors.RESET);
-        sendMessage("message", "Score: " + score + "   Direction: " + direction.toLowerCase());
+        sendMessage(LoggingLevels.MESSAGE, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + output + ConsoleColors.RESET);
+        sendMessage(LoggingLevels.MESSAGE, "Score: " + score + "   Direction: " + direction.toLowerCase());
 
-        sendMessage("debug1", "Rendered Player");
+        sendMessage(LoggingLevels.DEBUGLOW, "Rendered");
     }
 
     public static void set(Integer x, Integer y, String type) {
@@ -173,19 +172,19 @@ public class Game {
         return Console.getInput();
     }
 
-    public static void sendMessage(String level, String message) {
-        if (level.equalsIgnoreCase("message")) {
+    public static void sendMessage(LoggingLevels level, String message) {
+        if (level == LoggingLevels.MESSAGE) {
             Console.log(message);
-        } else if (level.equalsIgnoreCase("warn")) {
+        } else if (level == LoggingLevels.WARNING) {
             Console.warn(message);
-        } else if (level.equalsIgnoreCase("error")) {
+        } else if (level == LoggingLevels.ERROR) {
             Console.error(message);
-        } else if (level.equalsIgnoreCase("debug1")) {
+        } else if (level == LoggingLevels.DEBUGLOW) {
             Console.debug(message, 1);
-        } else if (level.equalsIgnoreCase("debug2")) {
+        } else if (level == LoggingLevels.DEBUGHIGH) {
             Console.debug(message, 2);
         } else {
-            Console.error(level + " is not a message level");
+            Console.error(level + " is not a logging level level");
         }
     }
 }
