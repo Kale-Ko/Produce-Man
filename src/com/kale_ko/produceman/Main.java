@@ -5,7 +5,7 @@ import com.kale_ko.api.java.Console;
 import java.io.IOException;
 
 public class Main {
-    public static String debug = "none";
+    public static DebugModes debug = DebugModes.NONE;
     public static Boolean autostart = false;
     public static int size = 8;
 
@@ -29,16 +29,20 @@ public class Main {
 
                 Console.log("Turned on autostart");
             } else if (string.equalsIgnoreCase("-debug")) {
-                debug = "low";
+                debug = DebugModes.SOME;
 
                 Console.log("Turned on debug");
             } else if (string.contentEquals("--debug")) {
-                if (args[index + 1].equalsIgnoreCase("low") || args[index + 1].equalsIgnoreCase("full")) {
-                    debug = args[index + 1];
+                if (args[index + 1].equalsIgnoreCase("some")) {
+                    debug = DebugModes.SOME;
+
+                    Console.log("Set debug to " + args[index + 1]);
+                } else if (args[index + 1].equalsIgnoreCase("all")) {
+                    debug = DebugModes.ALL;
 
                     Console.log("Set debug to " + args[index + 1]);
                 } else {
-                    Console.warn(args[index + 1] + " is not a debug level");
+                    Console.warn(args[index + 1] + " is not a debug level. Try none, some, or all");
                 }
             }
 
@@ -49,7 +53,7 @@ public class Main {
             Console.log("Welcome to Produce man, a game where you need to collect the fruit and avoid boxes, would you like to learn how to play?");
 
             if (Console.getInput().equalsIgnoreCase("yes")) {
-                Console.log("To play you use either wasd or directionals(left, right, up, down) to move. You can click enter to continue in the same direction");
+                Console.log("To play you use wasd to move. You can click enter to continue in the same direction");
                 Console.log("You need to collect all the apples while avoiding the boxes and walls");
 
                 Console.log("\nClick enter to start");
