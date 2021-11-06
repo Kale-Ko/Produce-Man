@@ -1,8 +1,14 @@
+/**
+    @license
+    MIT License
+    Copyright (c) 2021 Kale Ko
+    See https://kaleko.ga/license.txt
+*/
+
 package com.kale_ko.api.java;
 
 import com.kale_ko.produceman.DebugModes;
 import com.kale_ko.produceman.Main;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,7 +29,7 @@ public class Console {
     public static void debug(String message, int level) {
         if (level == 2 && Main.debug == DebugModes.ALL) {
             System.out.println(ConsoleColors.RESET + ConsoleColors.PURPLE_BOLD + "[Debug] " + ConsoleColors.RESET + ConsoleColors.PURPLE + message);
-        } else if (level == 1 && Main.debug == DebugModes.SOME || Main.debug == DebugModes.ALL)  {
+        } else if (level == 1 && Main.debug == DebugModes.SOME || Main.debug == DebugModes.ALL) {
             System.out.println(ConsoleColors.RESET + ConsoleColors.PURPLE_BOLD + "[Debug] " + ConsoleColors.RESET + ConsoleColors.PURPLE + message);
         }
     }
