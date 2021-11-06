@@ -1,15 +1,20 @@
+/**
+    @license
+    MIT License
+    Copyright (c) 2021 Kale Ko
+    See https://kaleko.ga/license.txt
+*/
+
 package com.kale_ko.produceman;
 
 import com.kale_ko.api.java.Console;
 import com.kale_ko.api.java.ConsoleColors;
 import com.kale_ko.api.java.LoggingLevels;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-@SuppressWarnings({"IntegerDivisionInFloatingPointContext", "SuspiciousNameCombination"})
 public class Game {
     public static Map<String, String> grid = new HashMap<>();
 
@@ -31,7 +36,7 @@ public class Game {
             for (int index2 = 0; index2 < size - 1; index2++) {
                 String type = "AIR";
                 if (index == pointSpotX && index2 == pointSpotY) type = "POINT";
-                if (index == Math.round(size / 2)  - 1 && index2 == Math.round(size / 2) - 1) {
+                if (index == Math.round(size / 2) - 1 && index2 == Math.round(size / 2) - 1) {
                     type = "PLAYER";
 
                     playerSpotX = Math.round(size / 2) - 1;
@@ -40,7 +45,7 @@ public class Game {
 
                 set(index, index2, type);
 
-                sendMessage(LoggingLevels.DEBUGHIGH, "Set X:" + index + " Y:"+ index2 + " to " + type.toLowerCase());
+                sendMessage(LoggingLevels.DEBUGHIGH, "Set X:" + index + " Y:" + index2 + " to " + type.toLowerCase());
             }
         }
 
@@ -130,7 +135,7 @@ public class Game {
                 if (type.equalsIgnoreCase("POINT")) output.append(ConsoleColors.RED_BOLD + ConsoleColors.RED_BACKGROUND + "   ");
                 if (type.equalsIgnoreCase("PLAYER")) output.append(ConsoleColors.GREEN_BOLD + ConsoleColors.GREEN_BACKGROUND + "   ");
 
-                sendMessage(LoggingLevels.DEBUGHIGH, "Rendered X:" + index + " Y:"+ index2 + " as " + type.toLowerCase());
+                sendMessage(LoggingLevels.DEBUGHIGH, "Rendered X:" + index + " Y:" + index2 + " as " + type.toLowerCase());
             }
         }
 

@@ -1,7 +1,13 @@
+/**
+    @license
+    MIT License
+    Copyright (c) 2021 Kale Ko
+    See https://kaleko.ga/license.txt
+*/
+
 package com.kale_ko.produceman;
 
 import com.kale_ko.api.java.Console;
-
 import java.io.IOException;
 
 public class Main {
