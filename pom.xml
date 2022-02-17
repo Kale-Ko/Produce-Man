@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <name>Produce Man</name>
-    <description>A small game you play in a Java console where you have to collect produce and avoid boxes</description>
+    <description>A small game you play in a Java console where you have to collect produce and avoid boxes.</description>
     <developers>
         <developer>
             <name>Kale Ko</name>
